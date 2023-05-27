@@ -45,7 +45,6 @@ public class AjaxController {
 		String vnp_SecureHash = Config.hmacSHA512("SNLNODLJHCHDAKWQUZEPFCIECKIRPTIE",input);
         input += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = Config.vnp_PayUrl + "?" + input;
-        System.out.println(paymentUrl);
 		return "redirect:" + paymentUrl;
 	}
 
