@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Result</title>
+</head>
+<body>
+    <div th:if="${signValue == vnp_SecureHash}">
+        <div th:if="${checkOrderId}">
+            <div th:if="${checkAmount}">
+                <div th:if="${checkOrderStatus}">
+                    <div th:if="${'00'.equals(vnp_ResponseCode)}">
+                        <!-- Xử lý/Cập nhật tình trạng giao dịch thanh toán "Thành công" -->
+                        <!-- <p th:text="'GD Thanh cong'"></p> -->
+                        <p>{"RspCode":"00","Message":"Confirm Success"}</p>
+                    </div>
+                    <div th:unless="${'00'.equals(vnp_ResponseCode)}">
+                        <!-- Xử lý/Cập nhật tình trạng giao dịch thanh toán "Không thành công" -->
+                        <!-- <p th:text="'GD Khong thanh cong'"></p> -->
+                        <p>{"RspCode":"02","Message":"Order already confirmed"}</p>
+                    </div>
+                </div>
+                <div th:unless="${checkOrderStatus}">
+                    <!-- Trạng thái giao dịch đã được cập nhật trước đó -->
+                    <p>{"RspCode":"04","Message":"Invalid Amount"}</p>
+                </div>
+            </div>
+            <div th:unless="${checkAmount}">
+                <!-- Số tiền không trùng khớp -->
+                <p>{"RspCode":"04","Message":"Invalid Amount"}</p>
+            </div>
+        </div>
+        <div th:unless="${checkOrderId}">
+            <!-- Mã giao dịch không tồn tại -->
+            <p>{"RspCode":"01","Message":"Order not Found"}</p>
+        </div>
+    </div>
+    <div th:unless="${signValue == vnp_SecureHash}">
+        <!-- Sai checksum -->
+        <p>{"RspCode":"97","Message":"Invalid Checksum"}</p>
+    </div>
+</body>
+</html>
